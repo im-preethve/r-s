@@ -102,31 +102,42 @@ def add_menu_item():
     return jsonify({'message': 'Menu item added successfully'}), 201
 
 # Order routes
-@main.route('/order/place', methods=['POST'])
+@main.route('/api/order', methods=['POST'])
 @login_required
-def place_order():
+def api_place_order():
     data = request.get_json()
-    
+
+    # Validate input data
+    if not data or 'order' not in data or 'quantity' not in data:
+        return jsonify({'error': 'Invalid input'}), 400
+
+    # Find the menu item (you may need to adjust this to fit your data structure)
+    menu_item = MenuItem.query.filter_by(name=data['order']).first()
+    if not menu_item:
+        return jsonify({'error': 'Menu item not found'}), 404
+
+    total_amount = menu_item.price * int(data['quantity'])
+
+    # Create a new order
     order = Order(
         user_id=current_user.id,
-        total_amount=data['total_amount']
+        total_amount=total_amount,
+        status='Pending'
     )
-    
-    db.session.add(order)
-    db.session.flush()  # This assigns an ID to the order
-    
-    for item in data['items']:
-        order_item = OrderItem(
-            order_id=order.id,
-            menu_item_id=item['menu_item_id'],
-            quantity=item['quantity']
-        )
-        db.session.add(order_item)
-    
-    db.session.commit()
-    
-    return jsonify({'message': 'Order placed successfully', 'order_id': order.id}), 201
 
+    db.session.add(order)
+    db.session.flush()  # Get the order ID
+
+    # Create order items
+    order_item = OrderItem(
+        order_id=order.id,
+        menu_item_id=menu_item.id,
+        quantity=int(data['quantity'])
+    )
+    db.session.add(order_item)
+    db.session.commit()
+
+    return jsonify({'message': 'Order placed successfully', 'order_id': order.id}), 201
 @main.route('/order/view')
 @login_required
 def view_orders():

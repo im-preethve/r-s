@@ -607,58 +607,46 @@
 
 
 <!-- Order Sections Starts -->
-
 <section class="order" id="order">
     <h3 class="sub-heading"> Order Now </h3>
     <h1 class="heading"> Get it on time </h1>
 
-    <form action="">
+    <form id="orderForm">
         <div class="inputBox">
-
             <div class="input">
                 <span>Your name</span>
-                <input type="text" placeholder="enter your name...">
+                <input type="text" placeholder="enter your name..." id="customerName" required>
             </div>
-
             <div class="input">
                 <span>Your number</span>
-                <input type="text" placeholder="enter your number...">
+                <input type="text" placeholder="enter your number..." id="customerNumber" required>
             </div>
-
         </div>
 
         <div class="inputBox">
-
             <div class="input">
                 <span>Your order</span>
-                <input type="text" placeholder="enter food name...">
+                <input type="text" placeholder="enter food name..." id="foodName" required>
             </div>
-
             <div class="input">
-                <span>additional food</span>
-                <input type="text" placeholder="extra with food...">
+                <span>Additional food</span>
+                <input type="text" placeholder="extra with food..." id="additionalFood">
             </div>
-
         </div>
 
         <div class="inputBox">
-
             <div class="input">
                 <span>How much</span>
-                <input type="number" placeholder="how many orders...">
+                <input type="number" placeholder="how many orders..." id="orderQuantity" required>
             </div>
-
             <div class="input">
                 <span>Date & Time</span>
-                <input type="datetime-local">
+                <input type="datetime-local" id="orderTime" required>
             </div>
-
         </div>
 
         <input type="submit" value="Order now" class="btn">
-
     </form>
-
 </section>
 
 <!-- Order Sections Ends -->
